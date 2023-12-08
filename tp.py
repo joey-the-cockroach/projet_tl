@@ -864,9 +864,164 @@ def eval_exp_v2():
 # Question 14 : automate pour Lex
 
 operator = set(['+', '-', '*', '/'])
+criterefin=set(['+', '-', '*', '/',' ',END])
+
+def numberq14():
+    init_char()
+    return( number_state_0q14()) 
+
+def number_state_0q14():
+    c = next_char()
+    initvalue=0
+    if c=='0':
+        return (number_state_1q14(initvalue))
+    elif nonzerodigit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_2q14(initvalue))
+    elif c=='.':
+        exp_value =0
+        test=True
+        return (number_state_3q14(initvalue,test,exp_value))
+    else:
+        return (False,None)
+
+def number_state_1q14(initvalue):
+    c=next_char()
+    exp_value=0
+    if c=='0':
+        return (number_state_1q14(initvalue))
+    elif nonzerodigit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_5q14(initvalue))
+    elif c=='.':
+        exp_value =0
+        test=True
+        return (number_state_4q14(initvalue,test,exp_value)) 
+    elif c=='E' or c=='e':
+        signvaleur=1 
+        aftersign=0
+        return (number_state_6q14(initvalue,signvaleur,aftersign,exp_value))
+    elif c in criterefin:
+        return (True,initvalue)
+    else:
+        return (False,None)
+def number_state_2q14(initvalue):
+    c=next_char()
+    exp_value=0
+    if digit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_2q14(initvalue))
+    elif c=='.':
+        exp_value =0
+        test=True
+        return (number_state_4q14(initvalue,test,exp_value))
+    elif c=='E' or c=='e':
+        signvaleur=1 
+        aftersign=0
+        return (number_state_6q14(initvalue,signvaleur,aftersign,exp_value))
+    elif c in criterefin:
+        return (True,initvalue)
+    else:
+        return (False,None)
+def number_state_3q14(initvalue,test,exp_value): 
+    c=next_char()
+    if test:
+        exp_value+=1
+    if digit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_4q14(initvalue,test,exp_value))
+    elif c== END:
+        return (False,None)
+    else:
+        return (False,None)
+def number_state_4q14(initvalue,test,exp_value):
+    c=next_char()
+    if digit(c):
+        if test:
+            exp_value+=1
+        initvalue=initvalue*10+int(c)
+        return (number_state_4q14(initvalue,test,exp_value))
+    elif c=='E' or c=='e':
+        signvaleur=1
+        aftersign=0
+        return (number_state_6q14(initvalue,signvaleur,aftersign,exp_value))
+    elif c in criterefin:
+        return (True,initvalue*10**(-1*exp_value))
+    else:
+        return (False,None)
+def number_state_5q14(initvalue):
+    c=next_char()
+    if digit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_5q14(initvalue))
+    elif c=='.':
+        exp_value =0
+        test=True
+        return (number_state_4q14(initvalue,test,exp_value))
+    elif c=='E' or c=='e':
+        exp_value =0
+        signvaleur=1 
+        aftersign=0
+        return (number_state_6q14(initvalue,signvaleur,aftersign,exp_value))
+    elif c== END:
+        return (False,None)
+    else:
+        return (False,None)
+def number_state_6q14(initvalue,signvaleur,aftersign,exp_value):
+    c=next_char()
+    if digit(c):
+        aftersign=int(c)+aftersign*10
+        return (number_state_8q14(initvalue,signvaleur,aftersign,exp_value))
+    elif c=='+' or c=='-':
+        if c=='-':
+            signvaleur=-1
+        else:
+             signvaleur=1
+        return (number_state_7q14(initvalue,signvaleur,aftersign,exp_value))    
+    elif c== END:
+        return (False,None)
+    else:
+        return (False,None)
+def number_state_7q14(initvalue,signvaleur,aftersign,exp_value):
+    c=next_char()
+    if digit(c):
+        aftersign=int(c)+aftersign*10
+        return (number_state_8q14(initvalue,signvaleur,aftersign,exp_value))
+    elif c== END:
+        return (False,None)
+    else:
+        return (False,None)
+def number_state_8q14(initvalue,signvaleur,aftersign,exp_value):
+    c=next_char()
+    if digit(c):
+        aftersign=int(c)+aftersign*10
+        return (number_state_8q14(initvalue,signvaleur,aftersign,exp_value))
+    elif c in criterefin:
+        return (True,initvalue*10**(-1*exp_value)*10**(aftersign*signvaleur))
+    else:
+        return (False,None)
 
 def FA_Lex():
-    
+    init_char()
+    c=next_char()
+    if c in operator:
+        return(True)
+    elif c==')' or c=='(':
+        return(True)
+    else:
+        initvalue=0
+        if c=='0':
+            return (number_state_1(initvalue))
+        elif nonzerodigit(c):
+            initvalue=initvalue*10+int(c)
+            return (number_state_2(initvalue))
+        elif c=='.':
+            exp_value =0
+            test=True
+            return (number_state_3(initvalue,test,exp_value))
+        else:
+            return (False,None)
+
 
 
 ############
@@ -876,10 +1031,160 @@ def FA_Lex():
 NUM, ADD, SOUS, MUL, DIV, OPAR, FPAR = range(7)
 token_value = 0
 
+def numberq15():
+    init_char()
+    return( number_state_0q15()) 
 
+def number_state_0q15():
+    c = next_char()
+    initvalue=0
+    if c=='0':
+        return (number_state_1q15(initvalue))
+    elif nonzerodigit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_2q15(initvalue))
+    elif c=='.':
+        exp_value =0
+        test=True
+        return (number_state_3q15(initvalue,test,exp_value))
+    else:
+        return (False,None)
+
+def number_state_1q15(initvalue):
+    c=next_char()
+    exp_value=0
+    if c=='0':
+        return (number_state_1q15(initvalue))
+    elif nonzerodigit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_5q15(initvalue))
+    elif c=='.':
+        exp_value =0
+        test=True
+        return (number_state_4q15(initvalue,test,exp_value)) 
+    elif c=='E' or c=='e':
+        signvaleur=1 
+        aftersign=0
+        return (number_state_6q15(initvalue,signvaleur,aftersign,exp_value))
+    elif c in criterefin:
+        return (True,initvalue,'NUM')
+    else:
+        return (False,None)
+def number_state_2q15(initvalue):
+    c=next_char()
+    exp_value=0
+    if digit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_2q15(initvalue))
+    elif c=='.':
+        exp_value =0
+        test=True
+        return (number_state_4q15(initvalue,test,exp_value))
+    elif c=='E' or c=='e':
+        signvaleur=1 
+        aftersign=0
+        return (number_state_6q15(initvalue,signvaleur,aftersign,exp_value))
+    elif c in criterefin:
+        return (True,initvalue,'NUM')
+    else:
+        return (False,None)
+def number_state_3q15(initvalue,test,exp_value): 
+    c=next_char()
+    if test:
+        exp_value+=1
+    if digit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_4q15(initvalue,test,exp_value))
+    elif c== END:
+        return (False,None)
+    else:
+        return (False,None)
+def number_state_4q15(initvalue,test,exp_value):
+    c=next_char()
+    if digit(c):
+        if test:
+            exp_value+=1
+        initvalue=initvalue*10+int(c)
+        return (number_state_4q15(initvalue,test,exp_value))
+    elif c=='E' or c=='e':
+        signvaleur=1
+        aftersign=0
+        return (number_state_6q15(initvalue,signvaleur,aftersign,exp_value))
+    elif c in criterefin:
+        return (True,initvalue*10**(-1*exp_value),'NUM')
+    else:
+        return (False,None)
+def number_state_5q15(initvalue):
+    c=next_char()
+    if digit(c):
+        initvalue=initvalue*10+int(c)
+        return (number_state_5q15(initvalue))
+    elif c=='.':
+        exp_value =0
+        test=True
+        return (number_state_4q15(initvalue,test,exp_value))
+    elif c=='E' or c=='e':
+        exp_value =0
+        signvaleur=1 
+        aftersign=0
+        return (number_state_6q15(initvalue,signvaleur,aftersign,exp_value))
+    elif c== END:
+        return (False,None)
+    else:
+        return (False,None)
+def number_state_6q15(initvalue,signvaleur,aftersign,exp_value):
+    c=next_char()
+    if digit(c):
+        aftersign=int(c)+aftersign*10
+        return (number_state_8q15(initvalue,signvaleur,aftersign,exp_value))
+    elif c=='+' or c=='-':
+        if c=='-':
+            signvaleur=-1
+        else:
+             signvaleur=1
+        return (number_state_7q15(initvalue,signvaleur,aftersign,exp_value))    
+    elif c== END:
+        return (False,None)
+    else:
+        return (False,None)
+def number_state_7q15(initvalue,signvaleur,aftersign,exp_value):
+    c=next_char()
+    if digit(c):
+        aftersign=int(c)+aftersign*10
+        return (number_state_8q15(initvalue,signvaleur,aftersign,exp_value))
+    elif c== END:
+        return (False,None)
+    else:
+        return (False,None)
+def number_state_8q15(initvalue,signvaleur,aftersign,exp_value):
+    c=next_char()
+    if digit(c):
+        aftersign=int(c)+aftersign*10
+        return (number_state_8q15(initvalue,signvaleur,aftersign,exp_value))
+    elif c in criterefin:
+        return (True,initvalue*10**(-1*exp_value)*10**(aftersign*signvaleur),'NUM')
+    else:
+        return (False,None)
 
 def FA_Lex_w_token():
-    print("@ATTENTION: FA_lex_w_token à finir !") # LIGNE A SUPPRIMER
+    init_char()
+    c=next_char()
+    if c in LISTE:
+        i=index(LISTE)+1
+        return(True,i)
+    else:
+        initvalue=0
+        if c=='0':
+            return (number_state_1q15(initvalue))
+        elif nonzerodigit(c):
+            initvalue=initvalue*10+int(c)
+            return (number_state_2q15(initvalue))
+        elif c=='.':
+            exp_value =0
+            test=True
+            return (number_state_3q15(initvalue,test,exp_value))
+        else:
+            return (False,None)
 
 
 
