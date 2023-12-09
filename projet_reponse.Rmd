@@ -1,0 +1,61 @@
+
+---
+title: "Formulaire de réponse Projet TL"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-12-08"
+author: "THIRION Lucas, EL ATIA Youssef"
+---
+
+**Question 9**
+
+Ce langage n’est pas régulier car certaines règles de la grammaire sont de la forme \(X \rightarrow \) $a$ $Y$ $Y$, avec \(Y\) appartenant au vocabulaire non-terminal et \(a\) appartenant au vocabulaire terminal. Une grammaire est régulière si et seulement si toutes ses règles sont de la forme \(X \rightarrow \) $a$ $Y$ ou \(X \rightarrow \epsilon\).
+
+Il est cependant hors-contexte car toutes les règles sont de la forme \(X \rightarrow w\) avec \(w \in (V_T \cup V_N)^*\).
+
+En effet, \((\text{number}, +, -, *, /) \subset V_T\) et \(\underline{\text{exp}} \in V_N\).
+
+
+
+
+**Question 13**
+
+
+Montrons que le langage \(L = \mathcal{L}(\text{exp})\) n'est pas régulier.
+
+Utilisons le lemme de l'étoile pour montrer que \(L\) n'est pas régulier.
+
+Soit \(n\) un entier naturel (le \(n\) du lemme de l'étoile).
+
+Choisissons le mot \(w = ((((\ldots(((1)))\ldots))) \in L = \mathcal{L}(\text{exp})\) (\(n\) parenthèses ouvrantes, 1, \(n\) parenthèses fermantes).
+
+On a \( \lvert w \rvert = 2n+1 \geq n \).
+
+On peut donc appliquer le lemme de l'étoile.
+
+On a \(w = xyz\) avec \( \lvert xy \rvert \leq n \) et \( \lvert y \rvert \geq 1 \).
+
+Puisque \( \lvert xy \rvert \leq n\), \(y\) est contenu dans les \(n\) premières parenthèses ouvrantes.
+
+On a donc pour \(k=0\), \(w^{\prime}=xz\)=((..(1)))..)))) ($n-|y|$ parenthèse ouvrante, 1, n parenthèse fermante)
+
+$w^{\prime}$ n'est pas dans L car c'est impossible avec aucune dérivation d'obtenir ce résulatat car par défault notre construction preserve un bon parenthésage 
+
+**L n'est pas donc pas régulier**
+
+**Question 16**
+
+On va séparer $\underline{\text{exp}}$ en plusieurs catégories, représentant les différentes opérations possibles, en les
+rangeant par ordre de priorité croissant.
+
+$exp$ → $prod$ $SOUS$ $prod$ | $prod$ $ADD$ $prod$ | $prod$
+
+$prod$ → $num$ $MUL$ $num$ | $num$ $DIV$ $num$ | $num$
+
+
+$num$ → $number$ | $OPAR$ $exp$ $FPAR$
+
+
+
+
